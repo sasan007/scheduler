@@ -1,0 +1,31 @@
+.center-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10pt;
+}
+
+.demo-inline-calendar-card {
+  width: 300px;
+}
+.parent-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+.time-line-style{
+  padding-top: 10pt;
+  width: 50%;
+  padding-left: 10pt;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.example-button-container {
+  position: absolute;
+  top: 10px;
+  left: 78%;
+  z-index: 1000;
+  padding: 10px 15px;
+}
+

@@ -1,18 +1,16 @@
 import {Component} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {DatePickerComponent} from "./appointment2/date-picker/date-picker.component";
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {DatePickerComponent} from "./appointment/date-picker/date-picker.component";
 import {MatButtonToggle} from "@angular/material/button-toggle";
-import {MatIcon, MatIconModule} from "@angular/material/icon";
-import {MatDividerModule} from "@angular/material/divider";
+import {MatIcon} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DatePickerComponent, MatButtonToggle, MatIcon,MatButtonModule],
+  imports: [RouterOutlet, DatePickerComponent, MatButtonToggle, MatIcon, MatButtonModule, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  btnText: any = "Add Appointment";
 }

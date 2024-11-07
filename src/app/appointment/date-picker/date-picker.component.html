@@ -1,0 +1,17 @@
+
+<div class="parent-container">
+  <div class="center-container">
+    <mat-card class="demo-inline-calendar-card">
+      <mat-calendar [(selected)]="selected"></mat-calendar>
+    </mat-card>
+  </div>
+  <div class="example-button-container">
+    <button mat-fab color="primary" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <app-time-line #parent class="time-line-style"></app-time-line>
+</div>
+
+
+
