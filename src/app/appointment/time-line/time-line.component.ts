@@ -9,7 +9,7 @@ import {AppointmentCalendarCard} from "../../models/appointment-calendar-card.mo
 import {AppointmentCookieService} from "../../services/appointment-cookie.service";
 import {CalendarToolsService} from "../../services/calendar-tools.service";
 import {AlertService} from "../../services/alert.service";
-
+import { v4 as uuidv4 } from 'uuid';
 @Component({
   selector: 'app-time-line',
   standalone: true,
@@ -30,7 +30,7 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   hours: number[] = Array.from({length: 24}, (_, i) => i);
   showContextMenu = false;
   contextMenuPosition = {x: 0, y: 0};
-  selectedItemId: number | null = null;
+  selectedItemId: string | null = null;
   minutesDifference = (time1: string, time2: string) => (Number(time2.split(":")[0]) * 60 + Number(time2.split(":")[1])) - (Number(time1.split(":")[0]) * 60 + Number(time1.split(":")[1]));
 
   appointments: AppointmentCalendarCard[] = [];
@@ -66,7 +66,7 @@ export class TimeLineComponent implements OnInit, OnDestroy {
         this.alertService.alert("There is an overlap with an existing appointment.", 'Close', 4000);
       else {
         this.appointments.push({
-          id: this.appointments.length + 1,
+          id: uuidv4(),
           left: 60,
           top: this.calendarToolsService.startCardPoint(msg.startTime),
           date: msg.date,
