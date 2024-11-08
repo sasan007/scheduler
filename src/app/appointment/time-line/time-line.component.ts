@@ -2,11 +2,10 @@ import {ChangeDetectorRef, Component, HostListener, Input, OnDestroy, OnInit} fr
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {CdkDrag, CdkDragEnd, CdkDragMove} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDragEnd} from "@angular/cdk/drag-drop";
 import {Subscription} from "rxjs";
 import {AppointmentCallService} from "../../services/appointment-call.service";
 import {AppointmentCalendarCard} from "../../models/appointment-calendar-card.model";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {AppointmentCookieService} from "../../services/appointment-cookie.service";
 import {CalendarToolsService} from "../../services/calendar-tools.service";
 import {AlertService} from "../../services/alert.service";
@@ -95,7 +94,7 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent): void {
+  onClickOutside(): void {
     if (this.showContextMenu) {
       this.showContextMenu = false;
     }

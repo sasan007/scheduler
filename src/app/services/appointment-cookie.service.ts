@@ -21,7 +21,4 @@ export class AppointmentCookieService {
     return appointmentsJson ? JSON.parse(appointmentsJson) : [];
   }
 
-  clearAppointments(): void {
-    this.cookieService.delete(this.COOKIE_NAME);
-  }
 }

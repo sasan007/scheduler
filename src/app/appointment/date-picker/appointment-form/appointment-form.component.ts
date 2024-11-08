@@ -1,4 +1,4 @@
-import {Component, inject, model, Renderer2} from "@angular/core";
+import {Component, inject} from "@angular/core";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {
@@ -12,14 +12,12 @@ import {
 } from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {
-  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import {close} from "fs";
 import {NgIf} from "@angular/common";
 import {AppointmentModel} from "../../../models/appointment.model";
 

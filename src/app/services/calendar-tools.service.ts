@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import {AppointmentModel} from "../models/appointment.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarToolsService {
   startCardPoint = (time1: string) => (Number(time1.split(':')[0]) * 61) + Number(time1.split(':')[1]);
-  minutesDifference = (time1: string, time2: string) => (Number(time2.split(":")[0]) * 60 + Number(time2.split(":")[1])) - (Number(time1.split(":")[0]) * 60 + Number(time1.split(":")[1]));
+
   timeToMinutes(time: string): number {
     const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;

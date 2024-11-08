@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
-import {AppointmentModel} from "../models/appointment.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({

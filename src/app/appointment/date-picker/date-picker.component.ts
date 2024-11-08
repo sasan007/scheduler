@@ -3,9 +3,6 @@ import {
   Component,
   ElementRef,
   inject,
-  model,
-  Renderer2,
-  signal,
   ViewChild
 } from '@angular/core';
 import {MatCalendar, MatDatepickerModule} from "@angular/material/datepicker";
