@@ -1,14 +1,23 @@
 <div class="timeline-container">
   <div *ngFor="let hour of hours" class="hour-slot">
     <div class="hour-label">{{ hour }}:00</div>
-
-<!--    <div class="appointment" *ngIf="getAppointmentForHour(hour) as appointment"-->
-<!--         [style.height.px]="(appointment.endTime - appointment.startTime) * 60">-->
-<!--      <strong>{{ appointment.description }}</strong>-->
-<!--      <span>({{ appointment.startTime }}:00 - {{ appointment.endTime }}:00)</span>-->
-<!--    </div>-->
   </div>
-</div>
-<div class="example-box" cdkDrag>
-  Drag me around
+  <div *ngFor="let rect of getFilteredAppointments()"
+       class="draggable-rectangle"
+       cdkDrag
+       (contextmenu)="onRightClick($event, rect)"
+       (cdkDragEnded)="cdkDragEnded($event, rect)"
+       [ngStyle]="{ 'top': rect.top + 'px',
+       'left': rect.left + 'px',
+       'height': minutesDifference(rect.startTime, rect.endTime) + 'px'}">
+    {{rect.title}}
+  </div>
+  <div *ngIf="showContextMenu"
+       [style.left.px]="contextMenuPosition.x"
+       [style.top.px]="contextMenuPosition.y"
+       class="context-menu">
+    <ul>
+      <li (click)="deleteItem()">Delete Item</li>
+    </ul>
+  </div>
 </div>

@@ -1,0 +1,16 @@
+.appointment-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;  /* Space between fields */
+  padding: 24px; /* Adds padding around the form content */
+}
+
+.form-field {
+  width: 100%;
+}
+
+.dialog-actions {
+  padding: 16px 24px; /* Adds padding around the dialog actions */
+  display: flex;
+  justify-content: flex-end; /* Aligns buttons to the right */
+}

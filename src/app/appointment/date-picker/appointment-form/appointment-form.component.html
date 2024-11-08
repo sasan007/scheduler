@@ -1,12 +1,42 @@
-<h2 mat-dialog-title>Hi {{data.name}}</h2>
-<mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput [(ngModel)]="animal" />
+<h2 mat-dialog-title>Add Your Appointment</h2>
+
+<mat-dialog-content [formGroup]="appointmentForm" style="padding-top: 10px" class="appointment-form-content">
+  <!-- Title Input -->
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" required />
+    <mat-error *ngIf="appointmentForm.get('title')?.hasError('required')">
+      Title is required.
+    </mat-error>
   </mat-form-field>
+
+  <!-- Start Time Input -->
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Start Time</mat-label>
+    <input matInput type="time" formControlName="startTime" required />
+    <mat-error *ngIf="appointmentForm.get('startTime')?.hasError('required')">
+      Start time is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- End Time Input -->
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>End Time</mat-label>
+    <input matInput type="time" formControlName="endTime" required />
+    <mat-error *ngIf="appointmentForm.get('endTime')?.hasError('required')">
+      End time is required.
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Time validation error message -->
+  <mat-error *ngIf="appointmentForm.hasError('timeInvalid')">
+    Start time must be before end time.
+  </mat-error>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="animal()" cdkFocusInitial>Ok</button>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="close()">Close</button>
+  <button mat-raised-button color="primary" (click)="add()" [disabled]="appointmentForm.invalid">
+    Add Appointment
+  </button>
 </mat-dialog-actions>

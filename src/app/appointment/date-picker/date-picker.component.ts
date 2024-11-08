@@ -17,7 +17,10 @@ import {MatIcon} from "@angular/material/icon";
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent} from "@angular/material/dialog";
 import {MatFormField} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
-import {DialogOverviewExampleDialog} from "./appointment-form/appointment-form.component";
+import {NgForOf, NgStyle} from "@angular/common";
+import {AppointmentFormComponent} from "./appointment-form/appointment-form.component";
+import {AppointmentCallService} from "../services/appointment-call.service";
+import {AppointmentModel} from "./appointment.model";
 
 @Component({
   selector: 'app-date-picker',
@@ -35,6 +38,8 @@ import {DialogOverviewExampleDialog} from "./appointment-form/appointment-form.c
     MatDialogActions,
     MatDialogClose,
     FormsModule,
+    NgForOf,
+    NgStyle,
   ],
   providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,33 +48,35 @@ import {DialogOverviewExampleDialog} from "./appointment-form/appointment-form.c
 })
 export class DatePickerComponent {
   // @ts-ignore
-  @ViewChild('parent', { static: true }) parent: ElementRef;
-  selected = model<Date | null>(null);
+  @ViewChild('parent', {static: true}) parent: ElementRef;
+  selected = new Date();
   readonly animal = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
-  constructor(private renderer: Renderer2) {
+  appointmentModel: AppointmentModel;
+
+  constructor(private appointmentCallService: AppointmentCallService) {
+    this.appointmentModel = {title: '', startTime: "00:00", endTime: "00:00", date: new Date()};
   }
-  addDraggable() {
-    const div = this.renderer.createElement('div');
-    this.renderer.addClass(div, 'example-box');
-    this.renderer.addClass(div, 'cdkDrag');
-    const text = this.renderer.createText('Drag me around');
-    this.renderer.appendChild(div, text);
-    this.renderer.appendChild(this.parent.nativeElement, div);
-  }
+
   openDialog(): void {
-    this.addDraggable();
-    // const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-    //   data: {name: this.name(), animal: this.animal()},
-    // });
-    //
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   if (result !== undefined) {
-    //     this.animal.set(result);
-    //   }
-    // });
+
+    const dialogRef = this.dialog.open(AppointmentFormComponent, {
+      data: {name: this.name(), animal: this.animal()},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.appointmentModel = {
+          date: this.selected,
+          endTime: result.endTime,
+          startTime: result.startTime,
+          title: result.title
+        }
+        this.appointmentCallService.sendMessage(this.appointmentModel);
+        return;
+      }
+    });
   }
 }
 
