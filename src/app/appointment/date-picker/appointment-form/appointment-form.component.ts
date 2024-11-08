@@ -63,11 +63,10 @@ export class AppointmentFormComponent {
     const startTime = control.get('startTime')?.value;
     const endTime = control.get('endTime')?.value;
 
-    // Ensure both startTime and endTime are set and compare
     if (startTime && endTime && startTime >= endTime) {
-      return { timeInvalid: true }; // Return error object if invalid
+      return { timeInvalid: true };
     }
-    return null; // Return null if valid
+    return null;
   }
   close(): void {
     this.dialogRef.close();

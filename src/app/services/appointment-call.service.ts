@@ -1,4 +1,3 @@
-// message.service.ts
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {AppointmentModel} from "../models/appointment.model";

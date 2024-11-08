@@ -28,7 +28,7 @@ import {AlertService} from "../../services/alert.service";
 export class TimeLineComponent implements OnInit, OnDestroy {
   @Input('selectedDate') selectedDate: Date = new Date();
   private subscription!: Subscription;
-  hours: number[] = Array.from({length: 24}, (_, i) => i);  // Array for 24-hour slots
+  hours: number[] = Array.from({length: 24}, (_, i) => i);
   showContextMenu = false;
   contextMenuPosition = {x: 0, y: 0};
   selectedItemId: number | null = null;
@@ -81,17 +81,17 @@ export class TimeLineComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    // Clean up the subscription to prevent memory leaks
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
   }
 
   onRightClick(event: MouseEvent, item: any): void {
-    event.preventDefault(); // Prevent the default context menu
-    this.selectedItemId = item.id; // Store the item ID
-    this.contextMenuPosition = {x: event.clientX, y: event.clientY}; // Set the position of the context menu
-    this.showContextMenu = true; // Show the context menu
+    event.preventDefault();
+    this.selectedItemId = item.id;
+    this.contextMenuPosition = {x: event.clientX, y: event.clientY};
+    this.showContextMenu = true;
   }
 
   @HostListener('document:click', ['$event'])
@@ -104,9 +104,9 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   deleteItem() {
     if (this.selectedItemId !== null) {
       this.appointments = this.appointments.filter(item => item.id !== this.selectedItemId);
-      this.selectedItemId = null; // Reset selected item ID
+      this.selectedItemId = null;
     }
-    this.showContextMenu = false; // Hide the context menu
+    this.showContextMenu = false;
     this.cookieService.saveAppointments(this.appointments);
   }
 

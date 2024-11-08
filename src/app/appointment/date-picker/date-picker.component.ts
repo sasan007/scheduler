@@ -47,8 +47,7 @@ import {AppointmentCallService} from "../../services/appointment-call.service";
   styleUrl: './date-picker.component.css'
 })
 export class DatePickerComponent {
-  // @ts-ignore
-  @ViewChild('parent', {static: true}) parent: ElementRef;
+  @ViewChild('parent', {static: true}) parent!: ElementRef;
   selected = new Date();
   readonly dialog = inject(MatDialog);
   appointmentModel: AppointmentModel;
