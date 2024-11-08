@@ -4,7 +4,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {CdkDrag, CdkDragEnd, CdkDragMove} from "@angular/cdk/drag-drop";
 import {Subscription} from "rxjs";
-import {AppointmentCallService} from "../services/appointment-call.service";
+import {AppointmentCallService} from "../../services/appointment-call.service";
 import {AppointmentCalendarCard} from "./appointment-calendar-card.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AppointmentCookieService} from "../../services/appointment-cookie.service";

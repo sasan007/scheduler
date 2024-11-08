@@ -1,7 +1,7 @@
 // message.service.ts
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import {AppointmentModel} from "../date-picker/appointment.model";
+import {AppointmentModel} from "../appointment/date-picker/appointment.model";
 
 @Injectable({
   providedIn: 'root'

@@ -19,8 +19,8 @@ import {MatFormField} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgStyle} from "@angular/common";
 import {AppointmentFormComponent} from "./appointment-form/appointment-form.component";
-import {AppointmentCallService} from "../services/appointment-call.service";
 import {AppointmentModel} from "./appointment.model";
+import {AppointmentCallService} from "../../services/appointment-call.service";
 
 @Component({
   selector: 'app-date-picker',
@@ -50,8 +50,6 @@ export class DatePickerComponent {
   // @ts-ignore
   @ViewChild('parent', {static: true}) parent: ElementRef;
   selected = new Date();
-  readonly animal = signal('');
-  readonly name = model('');
   readonly dialog = inject(MatDialog);
   appointmentModel: AppointmentModel;
 
@@ -61,9 +59,7 @@ export class DatePickerComponent {
 
   openDialog(): void {
 
-    const dialogRef = this.dialog.open(AppointmentFormComponent, {
-      data: {name: this.name(), animal: this.animal()},
-    });
+    const dialogRef = this.dialog.open(AppointmentFormComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
