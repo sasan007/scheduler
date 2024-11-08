@@ -19,7 +19,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {NgForOf, NgStyle} from "@angular/common";
 import {AppointmentFormComponent} from "./appointment-form/appointment-form.component";
-import {AppointmentModel} from "./appointment.model";
+import {AppointmentModel} from "../../models/appointment.model";
 import {AppointmentCallService} from "../../services/appointment-call.service";
 
 @Component({

@@ -1,4 +1,4 @@
-import {AppointmentModel} from "../date-picker/appointment.model";
+import {AppointmentModel} from "./appointment.model";
 
 export interface AppointmentCalendarCard extends AppointmentModel {
   id: number;

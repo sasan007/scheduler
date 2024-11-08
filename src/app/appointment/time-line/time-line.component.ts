@@ -5,9 +5,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {CdkDrag, CdkDragEnd, CdkDragMove} from "@angular/cdk/drag-drop";
 import {Subscription} from "rxjs";
 import {AppointmentCallService} from "../../services/appointment-call.service";
-import {AppointmentCalendarCard} from "./appointment-calendar-card.model";
+import {AppointmentCalendarCard} from "../../models/appointment-calendar-card.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {AppointmentCookieService} from "../../services/appointment-cookie.service";
+import {CalendarToolsService} from "../../services/calendar-tools.service";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-time-line',
@@ -30,18 +32,18 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   showContextMenu = false;
   contextMenuPosition = {x: 0, y: 0};
   selectedItemId: number | null = null;
-  startCardPoint = (time1: string) => (Number(time1.split(':')[0]) * 61) + Number(time1.split(':')[1]);
   minutesDifference = (time1: string, time2: string) => (Number(time2.split(":")[0]) * 60 + Number(time2.split(":")[1])) - (Number(time1.split(":")[0]) * 60 + Number(time1.split(":")[1]));
 
   appointments: AppointmentCalendarCard[] = [];
 
   constructor(private appointmentCallService: AppointmentCallService,
               private cookieService: AppointmentCookieService,
-              private snackBar: MatSnackBar,
+              private calendarToolsService: CalendarToolsService,
+              private alertService: AlertService,
               private cdRef: ChangeDetectorRef) {
     if (cookieService.getAppointments().length > 0) {
       this.appointments = cookieService.getAppointments().map(appointment => {
-        appointment.top = this.startCardPoint(appointment.startTime);
+        appointment.top = this.calendarToolsService.startCardPoint(appointment.startTime);
         appointment.left = 60;
         return appointment;
       });
@@ -49,27 +51,25 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   }
 
   getFilteredAppointments() {
-    let asdfasd = this.appointments.filter(appointment => new Date(appointment.date).toDateString() === new Date(this.selectedDate).toDateString());
-    return asdfasd;
+    return this.appointments.filter(appointment => new Date(appointment.date).toDateString() === new Date(this.selectedDate).toDateString());
   }
 
   ngOnInit() {
-    // Subscribe to the message observable
     this.subscription = this.appointmentCallService.message$.subscribe((msg) => {
       let isConflict = false;
       for (const appointment of this.getFilteredAppointments()) {
-        if (this.isOverlapping(msg.startTime, msg.endTime, appointment.startTime, appointment.endTime)) {
+        if (this.calendarToolsService.isOverlapping(msg.startTime, msg.endTime, appointment.startTime, appointment.endTime)) {
           isConflict = true;
           break;
         }
       }
       if (isConflict)
-        this.alert("There is an overlap with an existing appointment.", 'Close', 4000);
+        this.alertService.alert("There is an overlap with an existing appointment.", 'Close', 4000);
       else {
         this.appointments.push({
           id: this.appointments.length + 1,
           left: 60,
-          top: this.startCardPoint(msg.startTime),
+          top: this.calendarToolsService.startCardPoint(msg.startTime),
           date: msg.date,
           endTime: msg.endTime,
           startTime: msg.startTime,
@@ -80,37 +80,11 @@ export class TimeLineComponent implements OnInit, OnDestroy {
       this.cdRef.detectChanges();
     });
   }
-
-  private alert(content: string, action: string, duration: number) {
-    let sb = this.snackBar.open(content, action, {
-      duration: duration,
-      panelClass: ["custom-style"]
-    });
-    sb.onAction().subscribe(() => {
-      sb.dismiss();
-    });
-  }
-
   ngOnDestroy() {
     // Clean up the subscription to prevent memory leaks
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  timeToMinutes(time: string): number {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
-  }
-
-  isOverlapping(newStartTime: string, newEndTime: string, existingStartTime: string, existingEndTime: string): boolean {
-    const newStart = this.timeToMinutes(newStartTime);
-    const newEnd = this.timeToMinutes(newEndTime);
-    const existingStart = this.timeToMinutes(existingStartTime);
-    const existingEnd = this.timeToMinutes(existingEndTime);
-
-    // Check if the new appointment overlaps with the existing one
-    return (newStart < existingEnd && newEnd > existingStart);
   }
 
   onRightClick(event: MouseEvent, item: any): void {
@@ -139,9 +113,9 @@ export class TimeLineComponent implements OnInit, OnDestroy {
   cdkDragEnded(e: CdkDragEnd, item: any) {
     let isConflict = false;
     for (const appointment of this.getFilteredAppointments().filter(x => x.id != item.id)) {
-      if (this.isOverlapping(
-        this.addMinutesToTime(item.startTime, e.distance.y),
-        this.addMinutesToTime(item.endTime, e.distance.y),
+      if (this.calendarToolsService.isOverlapping(
+        this.calendarToolsService.addMinutesToTime(item.startTime, e.distance.y),
+        this.calendarToolsService.addMinutesToTime(item.endTime, e.distance.y),
         appointment.startTime,
         appointment.endTime)) {
         isConflict = true;
@@ -149,32 +123,18 @@ export class TimeLineComponent implements OnInit, OnDestroy {
       }
     }
     if (isConflict) {
-      this.alert("There is an overlap with an existing appointment.", 'Close', 4000);
+      this.alertService.alert("There is an overlap with an existing appointment.", 'Close', 4000);
       return
     }
 
     this.appointments = this.appointments.map(appointment => {
       if (appointment.id === item.id) {
-        appointment.startTime = this.addMinutesToTime(appointment.startTime, e.distance.y);
-        appointment.endTime = this.addMinutesToTime(appointment.endTime, e.distance.y);
+        appointment.startTime = this.calendarToolsService.addMinutesToTime(appointment.startTime, e.distance.y);
+        appointment.endTime = this.calendarToolsService.addMinutesToTime(appointment.endTime, e.distance.y);
         return appointment;
       }
       return appointment;
     });
     this.cookieService.saveAppointments(this.appointments);
-  }
-
-  addMinutesToTime(time: string, minutesToAdd: number): string {
-    const [hours, minutes] = time.split(':').map(Number);
-
-    const date = new Date();
-    date.setHours(hours, minutes);
-
-    date.setMinutes(date.getMinutes() + minutesToAdd);
-
-    const updatedHours = date.getHours().toString().padStart(2, '0');
-    const updatedMinutes = date.getMinutes().toString().padStart(2, '0');
-
-    return `${updatedHours}:${updatedMinutes}`;
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import {AppointmentModel} from "../appointment/date-picker/appointment.model";
+import {AppointmentModel} from "../models/appointment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -34,4 +34,5 @@ export class CalendarToolsService {
 
     return `${updatedHours}:${updatedMinutes}`;
   }
+
 }

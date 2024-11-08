@@ -21,7 +21,7 @@ import {
 } from "@angular/material/dialog";
 import {close} from "fs";
 import {NgIf} from "@angular/common";
-import {AppointmentModel} from "../appointment.model";
+import {AppointmentModel} from "../../../models/appointment.model";
 
 @Component({
   templateUrl: 'appointment-form.component.html',
