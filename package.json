@@ -1,5 +1,5 @@
 {
-  "name": "payever-calendar",
+  "name": "scheduler",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:payever-calendar": "node dist/payever-calendar/server/server.mjs"
+    "serve:ssr:scheduler": "node dist/scheduler/server/server.mjs"
   },
   "private": true,
   "dependencies": {
